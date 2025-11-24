@@ -69,6 +69,7 @@ while (playing)
     
     if (playerBust)
     {
+        Console.Clear();
         continue;
     }
 
@@ -206,6 +207,7 @@ public class BlackJack
     
     public void BuildDeck()
     {
+        deck.Clear();
         foreach(string suit in suits)
         {
             foreach(string value in cardValues)
