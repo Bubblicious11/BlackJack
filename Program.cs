@@ -114,6 +114,13 @@ while (playing)
             }
         }
         
+        else if(dealerScore == playerScore)
+        {
+            BlackJack.Typing("Dealer stays. Dealer wins ties! Play again? (y/n)");
+            playing = Console.ReadLine() == "y";
+            break;
+        }
+        
         else if(dealerScore > playerScore)
         {
             BlackJack.Typing("Dealer stays. Dealer wins! Play again? (y/n)");
