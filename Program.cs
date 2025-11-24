@@ -69,8 +69,6 @@ while (playing)
     
     if (playerBust)
     {
-        System.Console.WriteLine("Press any key to exit...");
-        System.Console.ReadKey(true);
         continue;
     }
 
@@ -132,12 +130,7 @@ while (playing)
 
     }
 
-    if (!playing)
-    {
-        System.Console.WriteLine("Press any key to exit...");
-        System.Console.ReadKey(true);
-        break; 
-    }
+
 
 
 
@@ -145,6 +138,13 @@ while (playing)
 
 
 }
+
+    if (!playing)
+    {
+        System.Console.WriteLine("Press any key to exit...");
+        System.Console.ReadKey(true);
+        
+    }
 
 
 
