@@ -1,5 +1,9 @@
 ﻿Console.Clear();
 
+
+int money = 100;
+int buyIn = 10;
+int pot = 0;
 BlackJack.Typing("Welcome to Blackjack!");
 BlackJack.Typing("Do you want to play? (y/n)");
 bool playing = System.Console.ReadLine() == "y";
@@ -12,20 +16,39 @@ myGame.BuildDeck();
 
 while (playing)
 {
+    if(money < buyIn)
+    {
+        BlackJack.Typing($"You have ${money}, you can't afford to play. Get a job? (y/n)");
+        if (System.Console.ReadLine() != "n")
+        {
+            money += 100;
+            BlackJack.Typing($"You worked at Wendys for the day and now have ${money}");
+            continue;
+        }
+
+        else
+        {
+            BlackJack.Typing("That's too bad");
+            break;
+        }
+    }
+    
+    BlackJack.Typing($"You have ${money}. You put in ${buyIn}.");
+    money = money - buyIn;
+    pot += buyIn*2;
+
     if(myGame.deck.Count < 10)
     {
         myGame.BuildDeck();
     }
     playerBust = false;
     
-    
-    ;
     BlackJack.Typing($"There are {myGame.deck.Count} cards in the deck");
     playerHand = myGame.Draw(2);
     dealerHand = myGame.Draw(2);
     int playerScore = BlackJack.GetScore(playerHand,playerHand.Count);
     int dealerScore = BlackJack.GetScore(dealerHand,1);
-
+    BlackJack.Typing($"Current pot is: ${pot}");
     BlackJack.Typing($"Your cards are ", false);
     foreach(string card in playerHand)
     {
@@ -36,6 +59,16 @@ while (playing)
     BlackJack.Typing($"Dealer is showing {dealerHand[0]}");
     BlackJack.Typing("Do you want to hit or stay? (h/s)");
     hitting = System.Console.ReadLine() == "h";
+    if (hitting)
+    {
+        BlackJack.Typing("Double down? (y/n)");
+        if(System.Console.ReadLine() != "n")
+        {
+            money = money - buyIn;
+            pot = pot*2;
+            BlackJack.Typing($"Current pot is: ${pot}");
+        }
+    }
 
     while (hitting)
     {
@@ -52,11 +85,12 @@ while (playing)
         {
             playerBust = true;
             
-            BlackJack.Typing("You bust! Dealer wins! Play again? (y/n)");
+            BlackJack.Typing($"You bust! Dealer wins! You lost ${pot/2} and have ${money} remaining. Play again? (y/n)");
             if(Console.ReadLine() != "y")
             {
                 playing = false;
             }
+            
             break;
         }
         else
@@ -70,6 +104,7 @@ while (playing)
     if (playerBust)
     {
         Console.Clear();
+        pot=0;
         continue;
     }
 
@@ -92,8 +127,10 @@ while (playing)
         
         if(dealerScore > 21)
         {
-            BlackJack.Typing("Dealer busts! You win! Play again? (y/n)");
+            BlackJack.Typing($"Dealer busts! You win ${pot}! Play again? (y/n)");
+            money += pot;
             playing = Console.ReadLine() == "y";
+            pot = 0;
             break;
 
         }
@@ -102,29 +139,33 @@ while (playing)
         {
             if(playerScore == 21)
             {
-                BlackJack.Typing("Dealer wins ties! Play again? (y/n)");
+                BlackJack.Typing($"Dealer wins ties! You lost ${pot/2} and have ${money} remaining. Play again? (y/n)");
                 playing = Console.ReadLine() == "y";
+                pot = 0;
                 break;
             }
             else
             {
-                BlackJack.Typing("Dealer has 21! Dealer Wins! Play again? (y/n)");
+                BlackJack.Typing($"Dealer has 21! Dealer Wins! You lost ${pot/2} and have ${money} remaining. Play again? (y/n)");
                 playing = Console.ReadLine() == "y";
+                pot = 0;
                 break;
             }
         }
         
         else if(dealerScore == playerScore)
         {
-            BlackJack.Typing("Dealer stays. Dealer wins ties! Play again? (y/n)");
+            BlackJack.Typing($"Dealer stays. Dealer wins ties! You lost ${pot/2} and have ${money} remaining. Play again? (y/n)");
             playing = Console.ReadLine() == "y";
+            pot = 0;
             break;
         }
         
         else if(dealerScore > playerScore)
         {
-            BlackJack.Typing("Dealer stays. Dealer wins! Play again? (y/n)");
+            BlackJack.Typing($"Dealer stays. Dealer wins! You lost ${pot/2} and have ${money} remaining. Play again? (y/n)");
             playing = Console.ReadLine() == "y";
+            pot = 0;
             break;
         }
         
